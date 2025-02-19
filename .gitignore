@@ -51,5 +51,4 @@ next-env.d.ts
 # Temporary files
 *.log
 *.tmp
-.DS_Store
-Thumbs.db 
+**/.DS_Store 

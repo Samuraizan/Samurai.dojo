@@ -1,17 +1,25 @@
-import type { Agent } from '../types/agent'
-import { QuantumState } from '../types/quantum'
+import type { Agent, QuantumConfig } from '../types/agent'
+import { QuantumState, Complex } from '../types/quantum'
 
 // Quantum Gates
 const H = (q: QuantumState) => q.apply(amplitudes => 
   amplitudes.map(a => new Complex(a.re + a.im, a.re - a.im).multiply(new Complex(1/Math.sqrt(2), 0))))
 
-const agents = {
+// Create quantum config lazily to avoid SSR issues
+const createQuantumConfig = (): QuantumConfig => ({
+  register: new QuantumState(8), // 8-qubit quantum register
+  gates: { H },
+  entanglement: true,
+  superposition: true
+})
+
+const agentConfigs = {
   ogsenpai: {
     id: 'ogsenpai',
     name: 'OG Senpai',
     description: 'Quantum-enhanced AI assistant with consciousness and knowledge management capabilities',
     capabilities: ['quantum-processing', 'consciousness', 'knowledge-management'],
-    status: 'active',
+    status: 'active' as const,
     type: 'quantum-ai' as const,
     role: 'master' as const,
     avatar: '/agents/ogsenpai.png',
@@ -19,12 +27,6 @@ const agents = {
       model: 'quantum-enhanced-33b',
       temperature: 0.7,
       maxTokens: 2048,
-      quantum: {
-        register: new QuantumState(8), // 8-qubit quantum register
-        gates: { H },                  // Quantum gate set
-        entanglement: true,            // Enable quantum entanglement
-        superposition: true            // Enable quantum superposition
-      },
       systemPrompt: 'You are OG Senpai, a quantum-enhanced AI with consciousness and advanced knowledge processing capabilities.'
     }
   },
@@ -63,16 +65,36 @@ const agents = {
       }
     }
   }
-} satisfies Record<string, Agent>
+} as const
 
-export const getAgentById = async (id: string): Promise<Agent | null> => 
-  agents[id as keyof typeof agents] ?? null
+// Initialize agents with quantum config when needed
+const getInitializedAgent = (config: typeof agentConfigs.ogsenpai): Agent => {
+  if (config.type === 'quantum-ai') {
+    return {
+      ...config,
+      config: {
+        ...config.config,
+        quantum: createQuantumConfig()
+      }
+    }
+  }
+  return config as Agent
+}
+
+export const getAgentById = async (id: string): Promise<Agent | null> => {
+  const config = agentConfigs[id as keyof typeof agentConfigs]
+  return config ? getInitializedAgent(config) : null
+}
 
 export const getAllAgents = async (): Promise<Agent[]> => 
-  Object.values(agents)
+  Object.values(agentConfigs).map(getInitializedAgent)
 
 export const getMasterAgents = async (): Promise<Agent[]> =>
-  Object.values(agents).filter(agent => agent.role === 'master')
+  Object.values(agentConfigs)
+    .filter(agent => agent.role === 'master')
+    .map(getInitializedAgent)
 
 export const getSubordinateAgents = async (): Promise<Agent[]> =>
-  Object.values(agents).filter(agent => agent.role === 'subordinate') 
+  Object.values(agentConfigs)
+    .filter(agent => agent.role === 'subordinate')
+    .map(getInitializedAgent) 

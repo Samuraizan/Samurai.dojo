@@ -1,110 +1,264 @@
-# OGSenpai Agent Architecture
+# OG Senpai: The Master Agent
 
-## Project Structure
-```
-/app/ogsenpai/
-├── mind/                    # Mind Module
-│   ├── llm/                # Language Model Integration (OpenRouter)
-│   ├── discovery/          # Self-Discovery Mechanisms
-│   └── memory/            # Knowledge Storage & Retrieval
-│
-├── nervous-system/         # Nervous System Module
-│   ├── event-bus/         # Event Management System
-│   ├── router/            # Message Routing
-│   └── coordinators/      # Sub-Agent Coordination
-│
-├── body/                  # Body Module
-│   ├── input/            # Input Processing (Text)
-│   ├── output/           # Response Generation
-│   └── state/            # Agent State Management
-│
-├── core/                 # Shared Core Components
-│   ├── types/           # TypeScript Types/Interfaces
-│   ├── config/          # Configuration Management
-│   ├── logger/          # Logging System
-│   └── utils/           # Shared Utilities
-│
-└── tests/               # Testing Directory
-    ├── unit/           # Unit Tests
-    ├── integration/    # Integration Tests
-    └── e2e/           # End-to-End Tests
+## Overview
+
+OG Senpai represents the central intelligence hub of the Samurai Dojo platform, orchestrating a sophisticated network of specialized agents. As the chief commander, OG Senpai coordinates various sub-agents, each contributing unique capabilities to create a powerful, multi-faceted AI system.
+
+## Architectural Design
+
+```mermaid
+graph TD
+    A[OG Senpai] --> B[Eliza OS]
+    A --> C[Skill Agents]
+    A --> D[Combat Agents]
+    A --> E[Strategy Agents]
+    B --> F[Natural Language Processing]
+    B --> G[Emotional Intelligence]
+    B --> H[Conversation Management]
 ```
 
-## Module Interactions
+## Core Components
+
+### 1. OG Senpai Core
+```typescript
+interface OGSenpaiCore {
+  id: string;
+  name: string;
+  rank: 'master' | 'grandmaster' | 'supreme';
+  activeAgents: Agent[];
+  capabilities: Set<Capability>;
+  state: AgentState;
+}
+
+interface AgentState {
+  status: 'active' | 'dormant' | 'learning';
+  currentTask?: Task;
+  performance: PerformanceMetrics;
+}
 ```
-[Text Input] → Body Module
-                ↓
-              Nervous System (Event Bus)
-                ↓
-              Mind Module (OpenRouter)
-                ↓
-              Nervous System (Event Bus)
-                ↓
-[Text Output] ← Body Module
+
+### 2. Agent Communication Protocol
+```typescript
+interface AgentMessage {
+  source: string;
+  target: string;
+  intent: MessageIntent;
+  payload: any;
+  priority: 1 | 2 | 3 | 4 | 5;
+  timestamp: Date;
+}
 ```
 
-## Implementation Phases
+## Eliza OS: The First Power
 
-### Phase 1: Core Setup & Mind Module
-1. Set up project structure
-2. Implement logging system
-3. Configure OpenRouter integration
-4. Basic text processing pipeline
-5. Simple response generation
+ElizaOS serves as OG Senpai's primary interface and consciousness layer, providing sophisticated natural language processing and emotional intelligence capabilities.
 
-### Phase 2: Nervous System Module
-1. Implement event bus
-2. Set up message routing
-3. Basic sub-agent management
+### 1. Core Capabilities
 
-### Phase 3: Body Module
-1. Text input processing
-2. Response formatting
-3. State management
+```typescript
+interface ElizaCapabilities {
+  naturalLanguageProcessing: {
+    understanding: NLUEngine;
+    generation: NLGEngine;
+    contextManagement: ContextManager;
+  };
+  emotionalIntelligence: {
+    sentimentAnalysis: SentimentEngine;
+    emotionalResponse: EmotionGenerator;
+    empathyMetrics: EmpathyAnalyzer;
+  };
+  conversationManagement: {
+    dialogFlow: DialogManager;
+    memorySystem: ConversationMemory;
+    responseGeneration: ResponseGenerator;
+  };
+}
+```
 
-### Phase 4: Integration & Testing
-1. Module integration
-2. Comprehensive testing
-3. Dashboard metrics integration
+### 2. Conversation Flow
+```mermaid
+sequenceDiagram
+    participant User
+    participant OGSenpai
+    participant ElizaOS
+    participant Agents
 
-## Key Components
+    User->>OGSenpai: Input Message
+    OGSenpai->>ElizaOS: Process Input
+    ElizaOS->>ElizaOS: Analyze Context
+    ElizaOS->>Agents: Request Specialized Input
+    Agents->>ElizaOS: Provide Capabilities
+    ElizaOS->>OGSenpai: Generate Response
+    OGSenpai->>User: Deliver Response
+```
 
-### Mind Module
-- **LLM Integration**
-  - OpenRouter API client
-  - Prompt management
-  - Response processing
+### 3. Implementation Details
 
-- **Self-Discovery**
-  - Learning patterns
-  - Knowledge accumulation
-  - Decision making
+```typescript
+class ElizaOS implements BaseAgent {
+  private context: ConversationContext;
+  private memory: MemorySystem;
+  private nlp: NLPEngine;
 
-### Nervous System
-- **Event Bus**
-  - Message queuing
-  - Event routing
-  - Error handling
+  constructor() {
+    this.context = new ConversationContext();
+    this.memory = new MemorySystem();
+    this.nlp = new NLPEngine();
+  }
 
-- **Coordination**
-  - Sub-agent registry
-  - Task distribution
-  - State synchronization
+  async processInput(input: UserInput): Promise<Response> {
+    const analysis = await this.nlp.analyze(input);
+    const context = this.context.update(analysis);
+    const memory = this.memory.query(context);
+    
+    return this.generateResponse(analysis, context, memory);
+  }
 
-### Body Module
-- **Text Processing**
-  - Input sanitization
-  - Context extraction
-  - Response formatting
+  private async generateResponse(
+    analysis: Analysis,
+    context: Context,
+    memory: Memory
+  ): Promise<Response> {
+    // Response generation logic
+  }
+}
+```
 
-## Logging & Monitoring
-- Structured logging
-- Performance metrics
-- Error tracking
-- State monitoring
+## Agent Interaction System
+
+### 1. Command Structure
+```typescript
+interface Command {
+  type: CommandType;
+  source: Agent;
+  target: Agent | Agent[];
+  payload: CommandPayload;
+  priority: Priority;
+  execution: {
+    timeout: number;
+    retries: number;
+    fallback?: Command;
+  };
+}
+```
+
+### 2. Capability Registration
+```typescript
+interface AgentCapability {
+  name: string;
+  description: string;
+  requirements: string[];
+  permissions: Permission[];
+  performance: PerformanceMetrics;
+}
+
+class CapabilityRegistry {
+  private capabilities: Map<string, AgentCapability>;
+
+  registerCapability(agent: Agent, capability: AgentCapability) {
+    // Registration logic
+  }
+
+  queryCapability(requirement: string): Agent[] {
+    // Query logic
+  }
+}
+```
+
+## State Management
+
+### 1. Agent State Machine
+```typescript
+type AgentState = 
+  | 'initializing'
+  | 'ready'
+  | 'processing'
+  | 'waiting'
+  | 'error'
+  | 'terminated';
+
+interface AgentStateManager {
+  currentState: AgentState;
+  allowedTransitions: Map<AgentState, AgentState[]>;
+  stateHistory: StateHistoryEntry[];
+}
+```
+
+### 2. Memory Management
+```typescript
+interface MemorySystem {
+  shortTerm: Map<string, any>;
+  longTerm: Database;
+  cache: LRUCache<string, any>;
+  
+  store(key: string, value: any, duration?: Duration): void;
+  retrieve(key: string): Promise<any>;
+  forget(key: string): void;
+}
+```
+
+## Performance Monitoring
+
+### 1. Metrics Collection
+```typescript
+interface AgentMetrics {
+  responseTime: number;
+  accuracy: number;
+  resourceUsage: ResourceMetrics;
+  successRate: number;
+  errorRate: number;
+}
+```
+
+### 2. Performance Optimization
+```typescript
+class PerformanceOptimizer {
+  private metrics: MetricsCollector;
+  private threshold: ThresholdManager;
+
+  optimize(agent: Agent): OptimizationResult {
+    // Optimization logic
+  }
+}
+```
+
+## Security Measures
+
+### 1. Access Control
+```typescript
+interface AgentPermissions {
+  capabilities: Set<Capability>;
+  accessLevel: AccessLevel;
+  restrictions: Set<Restriction>;
+}
+```
+
+### 2. Communication Security
+```typescript
+interface SecureCommunication {
+  encryption: EncryptionProtocol;
+  authentication: AuthenticationMethod;
+  validation: ValidationRules;
+}
+```
 
 ## Future Expansion
-- Additional input modalities
-- Enhanced learning capabilities
-- Advanced state management
-- Dashboard integration 
+
+1. **New Agent Integration**
+   - Capability discovery
+   - Automatic registration
+   - Performance monitoring
+   - Security validation
+
+2. **Enhanced Capabilities**
+   - Advanced NLP features
+   - Improved emotional intelligence
+   - Extended memory systems
+   - Enhanced learning capabilities
+
+## Related Documentation
+
+- [Agent Development Guide](../development/agents.md)
+- [ElizaOS Technical Specification](../lib/eliza.md)
+- [Security Protocol](../security/agent-security.md)
+- [Performance Optimization](../performance/agent-optimization.md) 

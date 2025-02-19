@@ -4,22 +4,19 @@
   "devCommand": "npm run dev",
   "installCommand": "npm install",
   "framework": "nextjs",
-  "regions": ["iad1"],
-  "builds": [
+  "regions": ["sfo1"],
+  "functions": {
+    "app/api/**/*.ts": {
+      "memory": 1024,
+      "maxDuration": 10
+    }
+  },
+  "crons": [
     {
-      "src": "package.json",
-      "use": "@vercel/next"
+      "path": "/api/maintenance/cleanup",
+      "schedule": "0 0 * * *"
     }
   ],
-  "env": {
-    "NEXT_TELEMETRY_DISABLED": "1",
-    "NODE_ENV": "production"
-  },
-  "build": {
-    "env": {
-      "NODE_OPTIONS": "--max-old-space-size=4096"
-    }
-  },
   "headers": [
     {
       "source": "/(.*)",
@@ -35,11 +32,28 @@
         {
           "key": "X-XSS-Protection",
           "value": "1; mode=block"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=()"
         }
       ]
     },
     {
-      "source": "/_next/static/(.*)",
+      "source": "/api/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-cache, no-store, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/_next/image(.*)",
       "headers": [
         {
           "key": "Cache-Control",
@@ -47,5 +61,22 @@
         }
       ]
     }
-  ]
+  ],
+  "redirects": [
+    {
+      "source": "/dashboard",
+      "destination": "/commandcenter",
+      "permanent": true
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/health",
+      "destination": "/api/health"
+    }
+  ],
+  "env": {
+    "NEXT_PUBLIC_APP_URL": "https://samuraidojo.vercel.app",
+    "VERCEL_ENV": "production"
+  }
 } 

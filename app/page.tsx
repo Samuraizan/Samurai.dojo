@@ -3,98 +3,57 @@
  * 
  * This is the main entry point of the application.
  * It contains three sections:
- * 1. Hero Section - Displays the Samurai animation
- * 2. Title Section - Shows "Samurai.Dojo" on first scroll
- * 3. Entry Section - Shows "OGSenpai" on second scroll with link to dashboard
+ * 1. Hero Section - Displays the GM logo
+ * 2. Title Section - Shows "Samurai.Dojo"
+ * 3. Entry Section - Shows Command Center link
  */
 
 'use client'
 
-import { useEffect, useState, useCallback } from 'react'
-import Image from 'next/image'
+import { useRef } from 'react'
 import Link from 'next/link'
-import { type FC } from 'react'
+import { motion, useScroll, useTransform } from 'framer-motion'
+import dynamic from 'next/dynamic'
 
-// Types
-type ScrollStage = 0 | 1 | 2
-type SectionProps = {
-  isVisible: boolean
-  children: React.ReactNode
-}
+const SamuraiSlice = dynamic(() => import('./components/animation/SamuraiSlice'), {
+  ssr: false
+})
 
-// Reusable Components
-const AnimatedSection: FC<SectionProps> = ({ isVisible, children }) => (
-  <section className="min-h-screen flex items-center justify-center">
-    <div
-      className={`transform transition-all duration-1000 ${
-        isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
-      }`}
+const Section = ({ children }: { children: React.ReactNode }) => (
+  <section className="h-screen flex items-center justify-center">
+    <motion.div
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      transition={{ duration: 1 }}
+      className="text-center"
     >
       {children}
-    </div>
+    </motion.div>
   </section>
 )
 
-// Constants
-const SCROLL_THRESHOLDS = {
-  TITLE: 0.5,
-  ENTRY: 1.5,
-}
-
-export default function LandingPage() {
-  const [scrollStage, setScrollStage] = useState<ScrollStage>(0)
-
-  const handleScroll = useCallback(() => {
-    const scrollPosition = window.scrollY
-    const windowHeight = window.innerHeight
-
-    if (scrollPosition < windowHeight * SCROLL_THRESHOLDS.TITLE) {
-      setScrollStage(0)
-    } else if (scrollPosition < windowHeight * SCROLL_THRESHOLDS.ENTRY) {
-      setScrollStage(1)
-    } else {
-      setScrollStage(2)
-    }
-  }, [])
-
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [handleScroll])
+export default function Home() {
+  const containerRef = useRef<HTMLDivElement>(null)
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start", "end"]
+  })
 
   return (
-    <main className="min-h-screen bg-black text-white">
-      {/* Hero Section */}
-      <AnimatedSection isVisible={true}>
-        <div className="w-[960px] h-[540px] relative">
-          <Image
-            src="/assets/Samurai Slice 960x540.gif"
-            alt="Samurai Slice Animation"
-            width={960}
-            height={540}
-            className="object-contain"
-            priority
-            unoptimized
-          />
-        </div>
-      </AnimatedSection>
+    <div ref={containerRef} className="min-h-screen bg-black text-white">
+      <Section>
+        <SamuraiSlice />
+      </Section>
 
-      {/* Title Section */}
-      <AnimatedSection isVisible={scrollStage >= 1}>
-        <h1 className="text-6xl font-bold text-center">
-          Samurai.Dojo
-        </h1>
-      </AnimatedSection>
+      <Section>
+        <h2 className="text-4xl font-semibold">samurai.dojo</h2>
+      </Section>
 
-      {/* Entry Section */}
-      <AnimatedSection isVisible={scrollStage >= 2}>
-        <Link 
-          href="/commandcenter" 
-          className="text-4xl text-gray-400 hover:text-white transition-colors duration-300"
-        >
-          Command Center
+      <Section>
+        <Link href="/agents" className="text-2xl lowercase text-white/70 hover:text-white transition-colors">
+          command center
         </Link>
-      </AnimatedSection>
-    </main>
+      </Section>
+    </div>
   )
 }

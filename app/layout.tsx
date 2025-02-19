@@ -1,16 +1,21 @@
-import type { Metadata } from "next";
-import { JetBrains_Mono } from "next/font/google";
-import "./globals.css";
+import type { Metadata } from 'next'
+import { Inter } from 'next/font/google'
+import './globals.css'
 
-const jetBrainsMono = JetBrains_Mono({ subsets: ["latin"] });
+const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: "Samurai Dojo",
-  description: "Advanced AI training and skill development platform",
+  title: 'Samurai.Dojo',
+  description: 'Samurai\'s Dojo',
   icons: {
-    icon: '/favicon.ico',
-  },
-};
+    icon: [
+      {
+        url: '/assets/Samuraizan black.png',
+        type: 'image/png',
+      }
+    ]
+  }
+}
 
 export default function RootLayout({
   children,
@@ -18,10 +23,10 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className="dark">
-      <body className={jetBrainsMono.className}>
+    <html lang="en">
+      <body className={`${inter.className} bg-black text-white antialiased`}>
         {children}
       </body>
     </html>
-  );
+  )
 }
