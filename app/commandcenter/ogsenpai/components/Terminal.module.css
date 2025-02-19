@@ -1,0 +1,180 @@
+.terminalContainer {
+  width: 100%;
+  max-width: 800px;
+  height: 70vh;
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(0, 0, 0, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--border-radius-lg);
+  overflow: hidden;
+  font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
+}
+
+/* Header styles */
+.terminalHeader {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.terminalControls {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.terminalButton {
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.terminalTitle {
+  flex: 1;
+  text-align: center;
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.6);
+  letter-spacing: var(--letter-spacing-wide);
+}
+
+/* Main terminal area */
+.terminal {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.terminal::-webkit-scrollbar {
+  width: 8px;
+}
+
+.terminal::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.terminal::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+.terminal::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Terminal lines */
+.terminalLine {
+  margin: 0.25rem 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.system { color: rgba(255, 255, 255, 0.6); }
+.input { color: rgba(255, 255, 255, 0.9); }
+.output { color: rgba(255, 255, 255, 0.8); }
+.error { color: rgba(255, 99, 71, 0.9); }
+
+/* Input form */
+.inputForm {
+  display: flex;
+  align-items: center;
+  margin-top: 0.5rem;
+}
+
+.prompt {
+  color: rgba(255, 255, 255, 0.8);
+  margin-right: 0.5rem;
+}
+
+.terminalInput {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.9);
+  font-family: inherit;
+  font-size: inherit;
+  padding: 0;
+  margin: 0;
+  outline: none;
+}
+
+/* Model toggle */
+.modelToggleContainer {
+  padding: 0.75rem;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.modelToggleButton {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.6);
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: 0.8125rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.modelToggleButton:not(:disabled):hover {
+  border-color: rgba(255, 255, 255, 0.4);
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.modelToggleButton.active {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.4);
+  color: rgba(255, 255, 255, 1);
+  cursor: default;
+}
+
+.modelToggleButton:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+/* Animations */
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+.terminalInput::after {
+  content: '▋';
+  animation: blink 1s step-end infinite;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .terminalContainer {
+    height: 80vh;
+    margin: 1rem;
+  }
+  
+  .terminal {
+    font-size: 0.8125rem;
+  }
+  
+  .modelToggleButton {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.75rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .modelToggleButton {
+    transition: none;
+  }
+  
+  .terminalInput::after {
+    animation: none;
+  }
+} 

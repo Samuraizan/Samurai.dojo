@@ -1,0 +1,47 @@
+/* Base Layout */
+.mainContainer {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+/* Navigation */
+.navigation {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: var(--spacing-lg);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10;
+}
+
+.navigationLink {
+  font-size: var(--font-size-base);
+  letter-spacing: var(--letter-spacing-wide);
+  opacity: 0.8;
+  transition: opacity var(--transition-base);
+}
+
+.navigationLink:hover {
+  opacity: 1;
+}
+
+/* Content Container */
+.contentContainer {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: var(--spacing-xxl) var(--spacing-lg) var(--spacing-lg);
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+  .contentContainer {
+    padding: var(--spacing-xl) var(--spacing-base) var(--spacing-base);
+  }
+} 

@@ -1,0 +1,102 @@
+.main {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+  background-color: #000000;
+  min-height: 100vh;
+  width: 100%;
+}
+
+.heroSection,
+.textSection,
+.commandSection {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  padding: 1rem;
+}
+
+.gifContainer {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  max-height: 100vh;
+}
+
+.textSection,
+.commandSection {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: opacity, transform;
+}
+
+.textSection.visible,
+.commandSection.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.textContent {
+  text-align: center;
+  padding: 1rem;
+}
+
+.textContent h2 {
+  font-size: clamp(2rem, 5vw, 3rem);
+  margin: 0;
+  line-height: 1.2;
+}
+
+.commandLink {
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  padding: 1rem 2rem;
+  transition: all 0.3s ease;
+  display: inline-block;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.commandLink:hover {
+  color: #ffffff;
+  transform: translateY(-2px);
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+  .heroSection,
+  .textSection,
+  .commandSection {
+    padding: 1rem;
+  }
+  
+  .commandLink {
+    padding: 0.75rem 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .heroSection {
+    height: 50vh;
+  }
+  
+  .textSection,
+  .commandSection {
+    min-height: 50vh;
+    height: auto;
+  }
+}
+
+/* Reduce motion if user prefers */
+@media (prefers-reduced-motion: reduce) {
+  .textSection,
+  .commandSection {
+    transition: none;
+  }
+  
+  .commandLink:hover {
+    transform: none;
+  }
+} 

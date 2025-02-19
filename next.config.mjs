@@ -1,16 +1,18 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'ximcyeotqntfzojerwei.supabase.co',
-      }
-    ],
-    domains: ['localhost'],
+    remotePatterns: [],
   },
-  reactStrictMode: true,
-  swcMinify: true,
-}
+  webpack: (config, { isServer }) => {
+    // Exclude binary files from being processed
+    config.module.rules.push({
+      test: /\.node$/,
+      use: 'node-loader',
+      exclude: /node_modules/,
+    });
 
-export default nextConfig 
+    return config;
+  },
+};
+
+export default nextConfig; 

@@ -1,0 +1,21 @@
+.main {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+}
+
+.main h1 {
+  font-size: 3.5rem;
+}
+
+.navigation {
+  display: flex;
+  gap: 2rem;
+}
+
+.link {
+  font-size: 1.2rem;
+} 

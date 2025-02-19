@@ -1,59 +1,82 @@
-/**
- * Landing Page (/)
- * 
- * This is the main entry point of the application.
- * It contains three sections:
- * 1. Hero Section - Displays the GM logo
- * 2. Title Section - Shows "Samurai.Dojo"
- * 3. Entry Section - Shows Command Center link
- */
+'use client';
 
-'use client'
+import React, { useEffect, useRef } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+import styles from './page.module.css';
 
-import { useRef } from 'react'
-import Link from 'next/link'
-import { motion, useScroll, useTransform } from 'framer-motion'
-import dynamic from 'next/dynamic'
+// Types
+interface SectionRef {
+  current: HTMLDivElement | null;
+}
 
-const SamuraiSlice = dynamic(() => import('./components/animation/SamuraiSlice'), {
-  ssr: false
-})
-
-const Section = ({ children }: { children: React.ReactNode }) => (
-  <section className="h-screen flex items-center justify-center">
-    <motion.div
-      initial={{ opacity: 0 }}
-      whileInView={{ opacity: 1 }}
-      transition={{ duration: 1 }}
-      className="text-center"
-    >
-      {children}
-    </motion.div>
-  </section>
-)
+// Constants
+const INTERSECTION_THRESHOLD = 0.5;
+const IMAGE_QUALITY = 75;
 
 export default function Home() {
-  const containerRef = useRef<HTMLDivElement>(null)
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start", "end"]
-  })
+  const section2Ref = useRef<HTMLDivElement>(null);
+  const section3Ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observerOptions: IntersectionObserverInit = {
+      threshold: INTERSECTION_THRESHOLD,
+      rootMargin: '0px',
+    };
+
+    const sectionRefs: SectionRef[] = [section2Ref, section3Ref];
+    
+    const observer = new IntersectionObserver((entries) => {
+      for (const entry of entries) {
+        if (entry.isIntersecting) {
+          requestAnimationFrame(() => {
+            entry.target.classList.add(styles.visible);
+          });
+        }
+      }
+    }, observerOptions);
+
+    for (const ref of sectionRefs) {
+      if (ref.current) observer.observe(ref.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
 
   return (
-    <div ref={containerRef} className="min-h-screen bg-black text-white">
-      <Section>
-        <SamuraiSlice />
-      </Section>
+    <main className={styles.main}>
+      <section className={styles.heroSection}>
+        <div className={styles.gifContainer}>
+          <Image
+            src="/assets/Samurai Slice.gif"
+            alt="Samurai Slice Animation"
+            fill
+            priority
+            quality={IMAGE_QUALITY}
+            sizes="100vw"
+            style={{
+              objectFit: 'cover',
+              objectPosition: 'center',
+            }}
+          />
+        </div>
+      </section>
 
-      <Section>
-        <h2 className="text-4xl font-semibold">samurai.dojo</h2>
-      </Section>
+      <section className={styles.textSection} ref={section2Ref}>
+        <div className={styles.textContent}>
+          <h2>samurai.dojo</h2>
+        </div>
+      </section>
 
-      <Section>
-        <Link href="/agents" className="text-2xl lowercase text-white/70 hover:text-white transition-colors">
-          command center
+      <section className={styles.commandSection} ref={section3Ref}>
+        <Link 
+          href="/commandcenter" 
+          className={styles.commandLink}
+          aria-label="Go to Command Center"
+        >
+          <span>command center</span>
         </Link>
-      </Section>
-    </div>
-  )
-}
+      </section>
+    </main>
+  );
+} 

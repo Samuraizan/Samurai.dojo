@@ -1,0 +1,184 @@
+.main {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #000000;
+}
+
+.main h1 {
+  font-size: 3.5rem;
+}
+
+.navigation {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 2rem;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10;
+}
+
+.link {
+  font-size: 1rem;
+  letter-spacing: 1px;
+}
+
+.title {
+  font-size: 1rem;
+  letter-spacing: 1px;
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 6rem 2rem 2rem;
+}
+
+.bentoGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--spacing-lg);
+  width: 100%;
+  max-width: 1200px;
+  padding: var(--spacing-lg);
+}
+
+.cardLink {
+  text-decoration: none;
+  transition: transform var(--transition-smooth);
+}
+
+.cardLink[aria-disabled="true"] {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.cardLink:not([aria-disabled="true"]):hover {
+  transform: translateY(-4px);
+}
+
+.bentoCard {
+  aspect-ratio: 1.5;
+  border-radius: var(--border-radius-lg);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  padding: var(--spacing-lg);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition: all var(--transition-smooth);
+  position: relative;
+  overflow: hidden;
+}
+
+.bentoCard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(
+    800px circle at var(--mouse-x) var(--mouse-y),
+    rgba(255, 255, 255, 0.06),
+    transparent 40%
+  );
+  opacity: 0;
+  transition: opacity var(--transition-base);
+  z-index: 2;
+}
+
+.bentoCard:hover::before {
+  opacity: 1;
+}
+
+.cardContent {
+  z-index: 3;
+  position: relative;
+  text-align: center;
+  width: 100%;
+}
+
+.cardTitle {
+  font-size: clamp(var(--font-size-lg), 3vw, var(--font-size-xl));
+  font-weight: 500;
+  letter-spacing: var(--letter-spacing-wide);
+  color: rgba(255, 255, 255, 0.9);
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.cardDescription {
+  font-size: var(--font-size-base);
+  color: rgba(255, 255, 255, 0.6);
+  margin: 0.5rem 0;
+  line-height: 1.4;
+}
+
+.cardStatus {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 0.75rem;
+}
+
+.coming-soon .cardStatus {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.beta .cardStatus {
+  background-color: rgba(255, 193, 7, 0.2);
+  color: rgba(255, 193, 7, 0.9);
+}
+
+/* Card status styles */
+.active {
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.beta {
+  border-color: rgba(255, 193, 7, 0.3);
+}
+
+.coming-soon {
+  border-color: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .bentoGrid {
+    grid-template-columns: 1fr;
+    padding: var(--spacing-base);
+  }
+  
+  .bentoCard {
+    aspect-ratio: 1.2;
+  }
+
+  .cardTitle {
+    font-size: var(--font-size-lg);
+  }
+
+  .cardDescription {
+    font-size: 0.875rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cardLink,
+  .bentoCard,
+  .bentoCard::before {
+    transition: none;
+  }
+} 

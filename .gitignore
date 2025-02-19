@@ -16,11 +16,6 @@
 # misc
 .DS_Store
 *.pem
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-.vercel
 
 # debug
 npm-debug.log*
@@ -29,26 +24,26 @@ yarn-error.log*
 
 # local env files
 .env*.local
+.env
+
+# vercel
+.vercel
 
 # typescript
 *.tsbuildinfo
 next-env.d.ts
 
 # IDE
-.idea
-.vscode
+.idea/
+.vscode/
 *.swp
 *.swo
 
-# Vercel
-.vercel/
-
-# Cache
-.cache/
-.npm/
-.next/cache/
-
-# Temporary files
-*.log
-*.tmp
-**/.DS_Store 
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db 

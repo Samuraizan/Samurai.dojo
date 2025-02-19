@@ -1,21 +1,10 @@
-import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
-import './globals.css'
-
-const inter = Inter({ subsets: ['latin'] })
+import './globals.css';
+import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Samurai.Dojo',
-  description: 'Samurai\'s Dojo',
-  icons: {
-    icon: [
-      {
-        url: '/assets/Samuraizan black.png',
-        type: 'image/png',
-      }
-    ]
-  }
-}
+  title: 'Samurai Dojo',
+  description: 'Welcome to the Samurai Dojo - Command Center',
+};
 
 export default function RootLayout({
   children,
@@ -24,9 +13,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${inter.className} bg-black text-white antialiased`}>
-        {children}
-      </body>
+      <body>{children}</body>
     </html>
   )
 }

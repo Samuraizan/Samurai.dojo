@@ -1,0 +1,190 @@
+.dashboardGrid {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  padding: var(--spacing-lg);
+}
+
+.cardLink {
+  text-decoration: none;
+  width: 300px;
+  height: 300px;
+}
+
+.bentoItem {
+  width: 100%;
+  height: 100%;
+  border-radius: var(--border-radius-lg);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+  padding: var(--spacing-lg);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.bentoItem:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.05);
+  transform: translateY(-4px);
+}
+
+.bentoItem::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(
+    800px circle at var(--mouse-x) var(--mouse-y),
+    rgba(255, 255, 255, 0.06),
+    transparent 40%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.bentoItem:hover::before {
+  opacity: 1;
+}
+
+.mainTitle {
+  font-size: var(--font-size-xl);
+  font-weight: 300;
+  letter-spacing: var(--letter-spacing-wide);
+  color: rgba(255, 255, 255, 0.95);
+  color: rgba(255, 255, 255, 0.9);
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.itemDescription {
+  font-size: var(--font-size-base);
+  color: rgba(255, 255, 255, 0.7);
+  text-align: center;
+  line-height: 1.5;
+  max-width: 280px;
+}
+
+.integrationGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: var(--spacing-base);
+  width: 100%;
+}
+
+.patternGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: var(--spacing-base);
+  width: 100%;
+}
+
+.featureGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: var(--spacing-base);
+  width: 100%;
+}
+
+.itemContent {
+  flex: 1;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: var(--font-size-base);
+  line-height: 1.5;
+}
+
+.integrationList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 1rem;
+}
+
+.integrationItem {
+  padding: 0.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  text-align: center;
+  font-size: 0.875rem;
+}
+
+.skillList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.skillItem {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.skillItem:last-child {
+  border-bottom: none;
+}
+
+@media (max-width: 768px) {
+  .dashboardGrid {
+    padding: var(--spacing-base);
+    gap: var(--spacing-lg);
+  }
+
+  .mainAgent {
+    padding: var(--spacing-lg) !important;
+  }
+
+  .mainTitle {
+    font-size: var(--font-size-lg);
+  }
+
+  .mainDescription {
+    font-size: var(--font-size-base);
+  }
+
+  .agentGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .bentoItem {
+    aspect-ratio: 1;
+  }
+
+  .itemTitle {
+    font-size: var(--font-size-base);
+  }
+
+  .itemDescription {
+    font-size: 0.875rem;
+  }
+
+  .integrationGrid,
+  .patternGrid,
+  .featureGrid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bentoItem {
+    transition: none;
+  }
+  
+  .bentoItem:hover {
+    transform: none;
+  }
+  
+  .bentoItem::before {
+    display: none;
+  }
+} 

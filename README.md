@@ -1,172 +1,150 @@
 # Samurai Dojo
 
-Advanced AI training and skill development platform built with Next.js and Supabase.
+A modern, minimalist web application built with Next.js 14, featuring an advanced AI system with ELIZA core and multi-model support for autonomous agents.
 
-## Features
-
-- 🎯 Skill tracking and progression
-- 💬 AI-powered chat assistant
-- 🔐 Secure authentication
-- ⚡ Real-time updates
-- 🎨 Clean, minimal design
-
-## Tech Stack
-
-- Next.js 14
-- TypeScript
-- Tailwind CSS
-- Supabase
-- Vercel
-
-## Getting Started
-
-1. Clone the repository:
-```bash
-git clone <your-repo-url>
-cd samurai-dojo
-```
-
-2. Install dependencies:
-```bash
-npm install
-```
-
-3. Set up environment variables:
-Create a `.env.local` file with:
-```
-NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
-```
-
-4. Run the development server:
-```bash
-npm run dev
-```
-
-5. Open [http://localhost:3000](http://localhost:3000) in your browser.
-
-## Project Structure
-
-```
-app/
-├── (routes)/           # Main application routes
-│   ├── dashboard/      # Dashboard page
-│   ├── chat/          # Chat interface
-│   └── test/          # Testing environment
-├── components/         # Reusable components
-├── lib/               # Utilities and API
-└── public/            # Static assets
-```
-
-## Contributing
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## Development
-
-### Prerequisites
-
-- Node.js 18+ 
-- npm or yarn
-- Docker (optional, for local development)
-- Supabase account
-
-### Environment Setup
-
-1. Configure Supabase:
-   - Create a new project in Supabase
-   - Set up authentication providers
-   - Run necessary database migrations
-
-2. Environment Variables:
-```bash
-# Required
-NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
-
-# Optional
-NEXT_PUBLIC_API_URL=your_api_url
-NEXT_PUBLIC_APP_URL=your_app_url
-```
-
-### Docker Development
-
-Run with Docker Compose:
-```bash
-docker-compose up
-```
-
-### Testing
-
-```bash
-# Run unit tests
-npm run test
-
-# Run e2e tests
-npm run test:e2e
-
-# Run lint
-npm run lint
-```
-
-## Deployment
-
-### Vercel Deployment
-
-1. Connect your repository to Vercel
-2. Configure environment variables
-3. Deploy with:
-```bash
-vercel --prod
-```
-
-### Docker Deployment
-
-1. Build the image:
-```bash
-docker build -t samurai-dojo .
-```
-
-2. Run the container:
-```bash
-docker run -p 3000:3000 samurai-dojo
-```
-
-## Architecture
+## 🤖 AI System Architecture
 
 ### Core Components
 
-- **Authentication**: Handled by Supabase Auth
-- **Database**: Postgres via Supabase
-- **API Routes**: Serverless functions in app/api
-- **State Management**: React Context + Hooks
-- **UI Components**: Custom components with Tailwind
+- **ELIZA Core**: Base pattern-matching engine with extensible response templates
+- **Multi-Model Support**: 
+  - OpenAI (Primary)
+  - DeepSeek (Fallback)
+  - ELIZA (Final Fallback)
+- **Memory System**: Conversation history and context management
+- **Command System**: Extensible command handler with built-in commands
 
-### Data Flow
+### Autonomous Agents
 
-1. Client requests -> Next.js Server Components
-2. Server Components -> Supabase Data
-3. Real-time updates via Supabase subscriptions
-4. State management through React Context
+The system is designed to support autonomous agents with:
+- State persistence
+- Context awareness
+- Multi-model switching
+- Error recovery
+- Memory management
 
-### Security
+## 🏗 Project Structure
 
-- All API routes are protected with middleware
-- Environment variables are properly secured
-- CORS policies are implemented
-- Rate limiting on API routes
+```
+samuraidojo/
+├── app/                      # Next.js app directory
+│   ├── commandcenter/       # Command center pages
+│   │   ├── ogsenpai/       # OG Senpai - AI Core
+│   │   │   ├── services/   # AI Services
+│   │   │   │   ├── elizaCore.ts        # Pattern matching engine
+│   │   │   │   ├── elizaService.ts     # Main service coordinator
+│   │   │   │   ├── deepSeekService.ts  # DeepSeek integration
+│   │   │   │   ├── openaiService.ts    # OpenAI integration
+│   │   │   │   └── commandHandler.ts   # Command processing
+│   │   │   └── components/ # UI Components
+│   │   └── socialsenpai/  # Social Agents Hub
+│   ├── components/         # Shared components
+│   ├── styles/            # Shared styles
+│   └── layout.tsx         # Root layout
+├── public/                # Static assets
+└── types/                # Shared TypeScript types
+```
 
-## Monitoring
+## 🚀 Getting Started
 
-- Vercel Analytics for performance monitoring
-- Error tracking with Sentry
-- Custom logging implementation
-- Real-time database monitoring
+1. Clone the repository
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Configure environment variables:
+   ```env
+   NEXT_PUBLIC_OPENAI_API_KEY=your-openai-key
+   NEXT_PUBLIC_DEEPSEEK_API_KEY=your-deepseek-key
+   ```
+4. Run the development server:
+   ```bash
+   npm run dev
+   ```
+5. Open [http://localhost:3000](http://localhost:3000)
+
+## 🎨 Design System
+
+- **Colors**: Monochromatic black and white theme
+- **Typography**: System font stack with careful letter-spacing
+- **Components**: 
+  - Bento Grid Cards with interactive hover effects
+  - Minimalist navigation
+  - Responsive layouts
+
+## 🤖 AI System Features
+
+### ELIZA Core
+- Pattern matching engine
+- Extensible response templates
+- Fallback system
+- Context awareness
+
+### LLM Integration
+- OpenAI GPT support
+- DeepSeek integration
+- Automatic fallback chain
+- Conversation history management
+
+### Command System
+```typescript
+Available commands:
+  help         - Show help message
+  reset        - Reset conversation
+  clear        - Clear terminal
+  exit         - End conversation
+  mode openai   - Switch to OpenAI
+  mode deepseek - Switch to DeepSeek
+  mode eliza   - Switch to ELIZA
+```
+
+## 🧱 Development Guidelines
+
+### Component Development
+- Use TypeScript for all components
+- Implement responsive design using mobile-first approach
+- Follow atomic design principles
+- Maintain consistent styling through CSS modules
+- Optimize performance for animations and effects
+
+### AI Development
+- Follow modular design patterns
+- Implement proper error handling
+- Maintain conversation context
+- Use TypeScript interfaces for type safety
+- Document all AI-related functions
+
+## 📱 Responsive Design
+
+- Mobile: 320px - 480px
+- Tablet: 481px - 768px
+- Desktop: 769px+
+
+## 🎭 Animation Guidelines
+
+- Use CSS transitions for simple animations
+- Implement requestAnimationFrame for complex animations
+- Respect user preferences (prefers-reduced-motion)
+- Optimize performance with will-change property
+
+## 🧪 Testing
+
+```bash
+npm run test        # Run unit tests
+npm run e2e        # Run end-to-end tests
+```
+
+## 📦 Deployment
+
+The application is configured for deployment on Vercel.
+
+## 🔒 Security
+
+- API keys are managed through environment variables
+- Rate limiting implemented for API calls
+- Error handling for API failures
+- Secure fallback mechanisms
+
+## 📄 License
+
+MIT License - See LICENSE file for details 
