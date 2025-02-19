@@ -1,0 +1,73 @@
+# OGSenpai Example Configuration
+# Copy this file to config.yml and adjust settings as needed
+
+# LLM Configuration
+llm:
+  # Model to use for language processing
+  # Available models: deepseek-coder-33b-instruct
+  model: deepseek-coder-33b-instruct
+
+  # Temperature for response generation (0.0 to 1.0)
+  # Higher values make output more creative but less focused
+  temperature: 0.7
+
+  # Maximum tokens to generate in responses
+  # Adjust based on your needs and model capabilities
+  maxTokens: 2048
+
+# Memory Configuration
+memory:
+  # Maximum number of memories to store
+  # Older or less important memories will be cleaned up when limit is reached
+  maxSize: 1000
+
+  # Time to live in milliseconds
+  # Memories older than this will be eligible for cleanup
+  # Default: 1 hour (3600000 ms)
+  ttl: 3600000
+
+# Consciousness Configuration
+consciousness:
+  # Minimum attention level required for processing (0.0 to 1.0)
+  # Higher values make the system more focused but less responsive
+  attentionThreshold: 0.5
+
+  # Interval for updating awareness state in milliseconds
+  # Lower values increase responsiveness but use more resources
+  # Default: 1 second (1000 ms)
+  awarenessInterval: 1000
+
+# Knowledge Base Configuration
+knowledge:
+  # Base path for knowledge files
+  # Can be absolute or relative to project root
+  basePath: knowledge-base
+
+  # Categories for organizing knowledge
+  # Each category should have its own directory
+  categories:
+    - core       # Fundamental principles and concepts
+    - skills     # Practical techniques and methods
+    - wisdom     # Philosophical insights and teachings
+    - practices  # Training exercises and routines
+
+# Logging Configuration
+logging:
+  # Log level: error, warn, info, debug
+  level: info
+
+  # File logging settings
+  file:
+    # Enable file logging
+    enabled: true
+
+    # Directory for log files
+    # Can be absolute or relative to project root
+    path: logs
+
+    # Maximum size per log file in bytes
+    # Default: 5MB (5242880 bytes)
+    maxSize: 5242880
+
+    # Maximum number of log files to keep
+    maxFiles: 5 
