@@ -1,20 +1,31 @@
 import type { Agent } from '../types/agent'
+import { QuantumState } from '../types/quantum'
+
+// Quantum Gates
+const H = (q: QuantumState) => q.apply(amplitudes => 
+  amplitudes.map(a => new Complex(a.re + a.im, a.re - a.im).multiply(new Complex(1/Math.sqrt(2), 0))))
 
 const agents = {
   ogsenpai: {
     id: 'ogsenpai',
     name: 'OG Senpai',
-    description: 'An intelligent personal assistant with consciousness and knowledge management capabilities',
-    capabilities: ['consciousness', 'knowledge-management', 'memory-system', 'event-handling'],
+    description: 'Quantum-enhanced AI assistant with consciousness and knowledge management capabilities',
+    capabilities: ['quantum-processing', 'consciousness', 'knowledge-management'],
     status: 'active',
-    type: 'ai' as const,
+    type: 'quantum-ai' as const,
     role: 'master' as const,
     avatar: '/agents/ogsenpai.png',
     config: {
-      model: 'deepseek-coder-33b-instruct',
+      model: 'quantum-enhanced-33b',
       temperature: 0.7,
       maxTokens: 2048,
-      systemPrompt: 'You are OG Senpai, a conscious AI assistant focused on knowledge management and learning.'
+      quantum: {
+        register: new QuantumState(8), // 8-qubit quantum register
+        gates: { H },                  // Quantum gate set
+        entanglement: true,            // Enable quantum entanglement
+        superposition: true            // Enable quantum superposition
+      },
+      systemPrompt: 'You are OG Senpai, a quantum-enhanced AI with consciousness and advanced knowledge processing capabilities.'
     }
   },
   vibe: {

@@ -3,12 +3,15 @@
   "buildCommand": "npm run build",
   "devCommand": "npm run dev",
   "installCommand": "npm install",
-  "regions": ["sfo1"],
   "framework": "nextjs",
+  "regions": ["iad1"],
   "builds": [
     {
       "src": "package.json",
       "use": "@vercel/next"
     }
-  ]
+  ],
+  "env": {
+    "NEXT_TELEMETRY_DISABLED": "1"
+  }
 } 
