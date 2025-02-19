@@ -10,10 +10,10 @@ export default function ChatPage() {
         <div className="container mx-auto px-4 py-3 flex justify-between items-center">
           <h1 className="text-lg font-bold">AI Assistant</h1>
           <Link
-            href="/dashboard"
+            href="/commandcenter"
             className="text-white/60 hover:text-white transition-colors"
           >
-            ← Back to Dashboard
+            ← Back to Command Center
           </Link>
         </div>
       </header>
