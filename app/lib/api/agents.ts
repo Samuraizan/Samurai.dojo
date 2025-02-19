@@ -1,4 +1,4 @@
-import type { Agent, AIAgent, HumanAgent } from '../types/agent'
+import type { Agent } from '../types/agent'
 
 const agents = {
   ogsenpai: {
@@ -8,6 +8,7 @@ const agents = {
     capabilities: ['consciousness', 'knowledge-management', 'memory-system', 'event-handling'],
     status: 'active',
     type: 'ai' as const,
+    role: 'master' as const,
     avatar: '/agents/ogsenpai.png',
     config: {
       model: 'deepseek-coder-33b-instruct',
@@ -16,15 +17,40 @@ const agents = {
       systemPrompt: 'You are OG Senpai, a conscious AI assistant focused on knowledge management and learning.'
     }
   },
-  sensei: {
-    id: 'sensei',
-    name: 'Sensei',
-    description: 'Master instructor and guide for the Samurai Dojo',
-    capabilities: ['teaching', 'guidance', 'wisdom'],
+  vibe: {
+    id: 'vibe',
+    name: 'Vibe',
+    description: 'Social media and community engagement agent powered by ElizaOS',
+    capabilities: [
+      'social-media-management',
+      'sentiment-analysis',
+      'content-generation',
+      'community-engagement',
+      'trend-analysis'
+    ],
     status: 'active',
-    type: 'human' as const,
-    role: 'instructor',
-    avatar: '/agents/sensei.png'
+    type: 'ai' as const,
+    role: 'subordinate' as const,
+    avatar: '/agents/vibe.png',
+    config: {
+      model: 'gpt-4-turbo',
+      temperature: 0.8,
+      maxTokens: 1024,
+      systemPrompt: 'You are Vibe, a social media expert focused on community engagement and trend analysis.',
+      framework: 'elizaOS',
+      frameworkConfig: {
+        elizaOS: {
+          platforms: ['twitter', 'discord', 'telegram'],
+          features: [
+            'auto-posting',
+            'sentiment-tracking',
+            'trend-detection',
+            'engagement-optimization',
+            'community-moderation'
+          ]
+        }
+      }
+    }
   }
 } satisfies Record<string, Agent>
 
@@ -34,20 +60,8 @@ export const getAgentById = async (id: string): Promise<Agent | null> =>
 export const getAllAgents = async (): Promise<Agent[]> => 
   Object.values(agents)
 
-export const getAIAgents = async (): Promise<AIAgent[]> => 
-  Object.values(agents).filter((agent): agent is AIAgent => agent.type === 'ai')
+export const getMasterAgents = async (): Promise<Agent[]> =>
+  Object.values(agents).filter(agent => agent.role === 'master')
 
-export const getHumanAgents = async (): Promise<HumanAgent[]> => 
-  Object.values(agents).filter((agent): agent is HumanAgent => agent.type === 'human')
-
-export async function getAgentConfig(id: string): Promise<AgentConfig | null> {
-  // This would typically fetch from a secure config store
-  if (id === 'ogsenpai') {
-    return {
-      modelName: 'deepseek-coder-33b-instruct',
-      temperature: 0.7,
-      maxTokens: 2048
-    }
-  }
-  return null
-} 
+export const getSubordinateAgents = async (): Promise<Agent[]> =>
+  Object.values(agents).filter(agent => agent.role === 'subordinate') 

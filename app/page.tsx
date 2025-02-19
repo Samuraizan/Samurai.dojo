@@ -10,37 +10,62 @@
 
 'use client'
 
+import { useEffect, useState, useCallback } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useEffect, useState } from 'react'
+import { type FC } from 'react'
+
+// Types
+type ScrollStage = 0 | 1 | 2
+type SectionProps = {
+  isVisible: boolean
+  children: React.ReactNode
+}
+
+// Reusable Components
+const AnimatedSection: FC<SectionProps> = ({ isVisible, children }) => (
+  <section className="min-h-screen flex items-center justify-center">
+    <div
+      className={`transform transition-all duration-1000 ${
+        isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
+      }`}
+    >
+      {children}
+    </div>
+  </section>
+)
+
+// Constants
+const SCROLL_THRESHOLDS = {
+  TITLE: 0.5,
+  ENTRY: 1.5,
+}
 
 export default function LandingPage() {
-  const [scrollStage, setScrollStage] = useState(0)
+  const [scrollStage, setScrollStage] = useState<ScrollStage>(0)
 
-  // Handle scroll events to control content visibility
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollPosition = window.scrollY
-      const windowHeight = window.innerHeight
+  const handleScroll = useCallback(() => {
+    const scrollPosition = window.scrollY
+    const windowHeight = window.innerHeight
 
-      // Define scroll stages based on window height
-      if (scrollPosition < windowHeight * 0.5) {
-        setScrollStage(0) // Initial stage - only animation visible
-      } else if (scrollPosition < windowHeight * 1.5) {
-        setScrollStage(1) // First scroll - show title
-      } else {
-        setScrollStage(2) // Second scroll - show entry link
-      }
+    if (scrollPosition < windowHeight * SCROLL_THRESHOLDS.TITLE) {
+      setScrollStage(0)
+    } else if (scrollPosition < windowHeight * SCROLL_THRESHOLDS.ENTRY) {
+      setScrollStage(1)
+    } else {
+      setScrollStage(2)
     }
-
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [handleScroll])
+
   return (
-    <main className="min-h-screen bg-black">
-      {/* Hero Section - Samurai Animation */}
-      <section className="flex min-h-screen flex-col items-center justify-center" id="hero-section">
+    <main className="min-h-screen bg-black text-white">
+      {/* Hero Section */}
+      <AnimatedSection isVisible={true}>
         <div className="w-[960px] h-[540px] relative">
           <Image
             src="/assets/Samurai Slice 960x540.gif"
@@ -52,32 +77,24 @@ export default function LandingPage() {
             unoptimized
           />
         </div>
-      </section>
+      </AnimatedSection>
 
-      {/* Title Section - Samurai.Dojo */}
-      <section className="min-h-screen flex items-center justify-center" id="title-section">
-        <div className={`transform transition-all duration-1000 ${
-          scrollStage >= 1 ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
-        }`}>
-          <h1 className="text-6xl font-bold text-white text-center">
-            Samurai.Dojo
-          </h1>
-        </div>
-      </section>
+      {/* Title Section */}
+      <AnimatedSection isVisible={scrollStage >= 1}>
+        <h1 className="text-6xl font-bold text-center">
+          Samurai.Dojo
+        </h1>
+      </AnimatedSection>
 
-      {/* Entry Section - Command Center */}
-      <section className="min-h-screen flex items-center justify-center" id="entry-section">
-        <div className={`transform transition-all duration-1000 ${
-          scrollStage >= 2 ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
-        }`}>
-          <Link 
-            href="/commandcenter" 
-            className="text-4xl text-gray-400 hover:text-white transition-colors duration-300"
-          >
-            Command Center
-          </Link>
-        </div>
-      </section>
+      {/* Entry Section */}
+      <AnimatedSection isVisible={scrollStage >= 2}>
+        <Link 
+          href="/commandcenter" 
+          className="text-4xl text-gray-400 hover:text-white transition-colors duration-300"
+        >
+          Command Center
+        </Link>
+      </AnimatedSection>
     </main>
   )
 }
