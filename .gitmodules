@@ -1,0 +1,4 @@
+[submodule "lib/eliza"]
+	path = lib/eliza
+	url = https://github.com/elizaos/eliza.git
+	branch = main
